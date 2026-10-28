@@ -38,15 +38,13 @@
     rushiImageRead.packages.${system}.img
   ];
 
-  # External UI extension packages. The producer's
-  # meta.rushi.ext supplies the [ui_extensions] entry name at
-  # eval time.
-  extUi = [
-    rushiGoalMode.packages.${system}."goal-ext"
-    rushiSimpleEnglish.packages.${system}."simple-english-ext"
-    rushiStatusline.packages.${system}.statusline
-    rushiTuiMermaidExt.packages.${system}."mermaid-ext"
-  ];
+  # External UI extension packages: none. The TUI extension
+  # set is declared by the config module (rushi/default.nix,
+  # rushi.external_ui_extensions) — the single declarative
+  # place for the TUI exts. The key stays (the raw-table
+  # contract: { extTools, extUi, extHooks }) with an empty
+  # list.
+  extUi = [ ];
 
   # External hook packages, bundled into the package's hooks/
   # dir. Each producer's meta.rushi.bin names the bundled

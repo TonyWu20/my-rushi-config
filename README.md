@@ -48,7 +48,11 @@ rushi/
 - The ext set is the **raw table** (per-package), not the
   whole-flake `rushiExt` fold: the `goal` loop tool is
   deliberately out (the agent does not need to see it). The
-  terminal-browser ext is not enabled.
+  terminal-browser ext is not enabled. The table carries
+  the tool and hook packages; the TUI extension set (goal,
+  simple-english, statusline, mermaid) is declared by the
+  config module (`rushi.external_ui_extensions`) — the
+  single declarative place for the TUI exts.
 
 ## Usage
 

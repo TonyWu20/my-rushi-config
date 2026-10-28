@@ -79,7 +79,18 @@
 
     # The declarative rushi config (the rushi.* options: the
     # model, limits, hook pipeline, loop, prompt, TUI).
-    rushiModule = import ./rushi/default.nix;
+    # The declarative config module, per system: the rushi.*
+    # options, the TUI extension set (rushi.external_ui_
+    # extensions), and the personal config tree.
+    rushiModuleFor =
+      system:
+      import ./rushi/default.nix {
+        inherit system;
+        rushiGoalMode = rushi-goal-mode;
+        rushiSimpleEnglish = rushi-simple-english;
+        rushiStatusline = rushi-statusline;
+        rushiTuiMermaidExt = rushi-tui-mermaid-ext;
+      };
 
     # The consumer ext set (the raw exts table, per-package
     # selection; the data file takes the ext flake inputs
@@ -110,7 +121,7 @@
         base = rushi-config.lib.mkRushiFull {
           inherit system;
           exts = extsFor system;
-          modules = [ rushiModule ];
+          modules = [ (rushiModuleFor system) ];
         };
         seeder = rushi-goal-mode.packages.${system}."rushi-goal";
       in

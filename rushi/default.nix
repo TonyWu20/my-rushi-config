@@ -7,16 +7,50 @@
 # config/rushi-config.nix), moved here: the consumer owns the
 # config, the flake only assembles.
 #
-# The builder-owned fields are not set here: the ext packages
-# (rushi.external_*) come from the flake's exts table
-# (rushi/exts.nix), and the TUI binary (rushi.tui) is wired by
-# the builder.
+# Builder-owned fields are not set here: the tool and hook
+# ext packages (rushi.external_tools,
+# rushi.external_hooks) come from the flake's exts table
+# (rushi/exts.nix), and the TUI binary (rushi.tui) is wired
+# by the builder. The one ext option this module owns is the
+# TUI extension set (rushi.external_ui_extensions, below) —
+# the single declarative place where this deployment states
+# which TUI extensions it ships.
 
+{
+  # The target system.
+  system,
+  # The ext flake inputs that ship TUI extensions (the
+  # flake's named inputs, stated explicitly at the boundary).
+  rushiGoalMode,
+  rushiSimpleEnglish,
+  rushiStatusline,
+  rushiTuiMermaidExt,
+}:
 {
   # The bash-only native tool catalog (the 2026-10-06
   # decision: the lean variant is retired, bash is the only
   # native tool this deployment exposes).
   rushi.tools = [ "bash" ];
+
+  # The TUI extension set: the one declarative place this
+  # deployment says which TUI extensions it ships (the
+  # my-nix-nvim shape: the config is where the extension list
+  # lives). Each entry is an ext flake package shipping a
+  # ui_extensions/<name>/ entry dir (ext.toml + the ext
+  # binary): goal-ext and simple-english-ext (the goal
+  # continuation and the linter UIs), statusline and
+  # mermaid-ext. The kernel build bundles them into the
+  # package's ui_extensions/ and records their names in
+  # tools.manifest; the TUI loads that dir through its
+  # built-in ext_dirs fallback. The flake's exts table
+  # (rushi/exts.nix) carries the tool and hook packages,
+  # not these.
+  rushi.external_ui_extensions = [
+    rushiGoalMode.packages.${system}."goal-ext"
+    rushiSimpleEnglish.packages.${system}."simple-english-ext"
+    rushiStatusline.packages.${system}.statusline
+    rushiTuiMermaidExt.packages.${system}."mermaid-ext"
+  ];
 
   rushi.config = {
     # [active]
