@@ -67,7 +67,7 @@
   };
 
   outputs = {
-    self, nixpkgs, fenix, rushi-config,
+    nixpkgs, rushi-config,
     rushi-goal-mode, rushi-obscura-web-access, no-find-grep,
     rushi-mineru-pdf, rushi-image-read, rushi-simple-english,
     rushi-statusline, rushi-tui-mermaid-ext,
@@ -150,14 +150,6 @@
       {
         default = pkgs.mkShell {
           packages = [ rushi ];
-          shellHook = ''
-            echo "rushi deployment — binaries on PATH:"
-            echo "  rushi         configured kernel (bin/ + tools/ + hooks/)"
-            echo "  rushi-tui     self-wired TUI entry, same store object"
-            echo "  rushi-goal    headless goal seeder, same store object"
-            echo "Run:  rushi run <session>   |   rushi-tui"
-            echo "Headless: rushi-goal <session> <goal> && rushi run <session>"
-          '';
         };
       }
     );
