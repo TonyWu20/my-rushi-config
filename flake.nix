@@ -126,8 +126,39 @@
           chmod +x $out/bin/rushi-goal
         '';
       };
+
+    # The home-manager entrypoint (the my-nix-nvim shape:
+    # nixvim exposes both spellings). The consumer imports
+    # this module into their home-manager evaluation; it
+    # turns on programs.rushi (the kernel's home-manager
+    # module, re-exposed by rushi-config) and feeds it the
+    # consumer build — the same package as
+    # packages.<system>.rushi, for the consumer's evaluation
+    # system.
+    homeModule =
+    { config, lib, pkgs, ... }:
+    let
+      system = pkgs.stdenv.hostPlatform.system;
+    in
+    {
+      imports = [ rushi-config.homeManagerModules.rushi ];
+      programs.rushi = {
+        enable = true;
+        package = rushiFor system;
+      };
+    };
   in
   {
+    # Home-manager entrypoints (both spellings, the my-nix-nvim
+    # shape). The consumer imports this module; it turns on
+    # programs.rushi with the consumer build as the package.
+    homeModules = {
+      default = homeModule;
+    };
+    homeManagerModules = {
+      default = homeModule;
+    };
+
     # The consumer rushi build: `nix build .#` or .#rushi.
     # The package carries bin/ (rushi, rushi-tui, rushi-goal,
     # the hook bins), tools/, ui_extensions/, hooks/,

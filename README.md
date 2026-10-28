@@ -39,6 +39,12 @@ rushi/
   modules = [ ./rushi/default.nix ] }`, with the headless
   goal seeder merged into `bin/` so it resolves the package
   root config side by side.
+- `homeManagerModules.default` (also `homeModules.default`,
+  the my-nix-nvim shape) is the home-manager entrypoint:
+  the consumer imports it into their home-manager
+  evaluation; it turns on `programs.rushi` (the kernel's
+  home-manager module) with this same consumer package, so
+  the deployment lands in the home profile's `bin/`.
 - The ext set is the **raw table** (per-package), not the
   whole-flake `rushiExt` fold: the `goal` loop tool is
   deliberately out (the agent does not need to see it). The
@@ -49,6 +55,16 @@ rushi/
 ```
 nix build  .#          # the deployment package
 nix develop .#         # dev shell: rushi, rushi-tui, rushi-goal on PATH
+```
+
+Or as a home-manager module (in the consumer's home
+evaluation):
+
+```nix
+imports = [ mrc.homeManagerModules.default ];
+# programs.rushi is enabled by the module itself; the
+# deployment's rushi, rushi-tui, rushi-goal land in the
+# profile's bin/.
 ```
 
 ## Bumping the inputs
