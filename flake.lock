@@ -121,11 +121,11 @@
         "rushi-tui": "rushi-tui"
       },
       "locked": {
-        "lastModified": 1793178210,
-        "narHash": "sha256-sV3nTJYcJLA3FXT9WBF2jki1rASoKzU675MBqoxth5Y=",
+        "lastModified": 1793770466,
+        "narHash": "sha256-BlG2j0uhRo5VbjA5x7TzTpf540IqC9dwkGoJ/F2saDk=",
         "owner": "TonyWu20",
         "repo": "rushi-config",
-        "rev": "4582ef88d8ef7cd8975215ff081c31cbc353e42f",
+        "rev": "36df561cc297060c233b62442a4130a8025ad343",
         "type": "github"
       },
       "original": {
@@ -192,11 +192,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1792981005,
-        "narHash": "sha256-aUXRcnCfpPmNy18gAJHXkFZ2on+90UvBXZtCch1qFJA=",
+        "lastModified": 1793696986,
+        "narHash": "sha256-6+FUkLGjxCa3yRCxI7z1xVsp8nInO10u+qAJgf4c2tY=",
         "owner": "TonyWu20",
         "repo": "rushi",
-        "rev": "0cc9849057bb63c5ab401ecc98035c3131992dff",
+        "rev": "f09fc03c2ad8b3bfea2337a976a173863edc1ee4",
         "type": "github"
       },
       "original": {
