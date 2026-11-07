@@ -1,2 +1,4 @@
 sessions/
 result
+consumer-build-monitor.sh
+consumer-build.log

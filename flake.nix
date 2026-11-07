@@ -3,8 +3,9 @@
 
   # This repo is the consumer side of the rushi-config
   # deployment layer (the my-nix-nvim vs nixvim shape): it
-  # owns the ext set and the config, the flake only assembles
-  # them through rushi-config's builder.
+  # owns the ext set, the config, and the version pins
+  # (kernel + TUI), the flake only assembles them through
+  # rushi-config's builder.
   inputs = {
     nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
     fenix = {
@@ -12,11 +13,36 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
-    # The deployment layer (the kernel + TUI + the builder).
-    # Pinned by the lock; bump with `nix flake update
-    # rushi-config`.
+    # The deployment layer (the builder). Pinned by the
+    # lock; bump with `nix flake update rushi-config`. The
+    # bump is for the builder logic, not the kernel: the
+    # version pins are this repo's own inputs (below),
+    # passed to the builder.
     rushi-config = {
       url = "github:TonyWu20/rushi-config";
+    };
+
+    # The version pins (consumer data, the exts precedent):
+    # the kernel flake (lib.mkRushi + the raw kernel package)
+    # and the TUI flake (the raw TUI package). Bump with
+    # `nix flake update rushi-kernel` / `nix flake update
+    # rushi-tui`: the kernel update never re-locks
+    # rushi-config. Each follows this flake's shared
+    # nixpkgs + fenix, so the whole graph shares one
+    # toolchain.
+    rushi-kernel = {
+      url = "github:TonyWu20/rushi";
+      inputs.nixpkgs.follows = "nixpkgs";
+      inputs.fenix.follows = "fenix";
+    };
+    rushi-tui = {
+      url = "github:TonyWu20/rushi-tui";
+      inputs.nixpkgs.follows = "nixpkgs";
+      inputs.fenix.follows = "fenix";
+      # The TUI flake's rushi-config input (its devshell
+      # launcher) aliases this repo's own pin, so the
+      # graph keeps one rushi-config source:
+      inputs.rushi-config.follows = "rushi-config";
     };
 
     # The exts, this repo's own inputs. Each ext repo is
@@ -67,7 +93,7 @@
   };
 
   outputs = {
-    nixpkgs, rushi-config,
+    nixpkgs, rushi-config, rushi-kernel, rushi-tui,
     rushi-goal-mode, rushi-obscura-web-access, no-find-grep,
     rushi-mineru-pdf, rushi-image-read, rushi-simple-english,
     rushi-statusline, rushi-tui-mermaid-ext,
@@ -122,6 +148,9 @@
           inherit system;
           exts = extsFor system;
           modules = [ (rushiModuleFor system) ];
+          # The version pins: this repo's own lock pins.
+          kernel = rushi-kernel;
+          tui = rushi-tui;
         };
         seeder = rushi-goal-mode.packages.${system}."rushi-goal";
       in

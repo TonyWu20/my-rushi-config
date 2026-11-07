@@ -106,10 +106,12 @@
         "rushi-config": "rushi-config",
         "rushi-goal-mode": "rushi-goal-mode",
         "rushi-image-read": "rushi-image-read",
+        "rushi-kernel": "rushi-kernel_2",
         "rushi-mineru-pdf": "rushi-mineru-pdf",
         "rushi-obscura-web-access": "rushi-obscura-web-access",
         "rushi-simple-english": "rushi-simple-english",
         "rushi-statusline": "rushi-statusline",
+        "rushi-tui": "rushi-tui_2",
         "rushi-tui-mermaid-ext": "rushi-tui-mermaid-ext"
       }
     },
@@ -121,11 +123,11 @@
         "rushi-tui": "rushi-tui"
       },
       "locked": {
-        "lastModified": 1793770466,
-        "narHash": "sha256-BlG2j0uhRo5VbjA5x7TzTpf540IqC9dwkGoJ/F2saDk=",
+        "lastModified": 1794052209,
+        "narHash": "sha256-YVJDlJB97FVsAYBF/jMCWu8sYaOO+AX5w7EWZ1qRVC8=",
         "owner": "TonyWu20",
         "repo": "rushi-config",
-        "rev": "36df561cc297060c233b62442a4130a8025ad343",
+        "rev": "1b68694315aa3c9f5af578979c68493932cdce75",
         "type": "github"
       },
       "original": {
@@ -192,11 +194,34 @@
         ]
       },
       "locked": {
-        "lastModified": 1793696986,
-        "narHash": "sha256-6+FUkLGjxCa3yRCxI7z1xVsp8nInO10u+qAJgf4c2tY=",
+        "lastModified": 1794052064,
+        "narHash": "sha256-CXpoih6VFMETclfchQVQPSyVlGniXShdIL0lb4v3mvE=",
         "owner": "TonyWu20",
         "repo": "rushi",
-        "rev": "f09fc03c2ad8b3bfea2337a976a173863edc1ee4",
+        "rev": "73efa28d275535a69f264e8a2d997bfc099d719b",
+        "type": "github"
+      },
+      "original": {
+        "owner": "TonyWu20",
+        "repo": "rushi",
+        "type": "github"
+      }
+    },
+    "rushi-kernel_2": {
+      "inputs": {
+        "fenix": [
+          "fenix"
+        ],
+        "nixpkgs": [
+          "nixpkgs"
+        ]
+      },
+      "locked": {
+        "lastModified": 1794052064,
+        "narHash": "sha256-CXpoih6VFMETclfchQVQPSyVlGniXShdIL0lb4v3mvE=",
+        "owner": "TonyWu20",
+        "repo": "rushi",
+        "rev": "73efa28d275535a69f264e8a2d997bfc099d719b",
         "type": "github"
       },
       "original": {
@@ -345,6 +370,32 @@
       "original": {
         "owner": "TonyWu20",
         "repo": "rushi-tui-mermaid-ext",
+        "type": "github"
+      }
+    },
+    "rushi-tui_2": {
+      "inputs": {
+        "fenix": [
+          "fenix"
+        ],
+        "nixpkgs": [
+          "nixpkgs"
+        ],
+        "rushi-config": [
+          "rushi-config"
+        ]
+      },
+      "locked": {
+        "lastModified": 1792976588,
+        "narHash": "sha256-CSAzBI5hLKaS7JpWPirCQYzzXxcPwfE0P9jp+brIK64=",
+        "owner": "TonyWu20",
+        "repo": "rushi-tui",
+        "rev": "2596202487314bfc207d519d2c4785ba37569935",
+        "type": "github"
+      },
+      "original": {
+        "owner": "TonyWu20",
+        "repo": "rushi-tui",
         "type": "github"
       }
     },

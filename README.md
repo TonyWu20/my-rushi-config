@@ -12,7 +12,8 @@ builder (`rushi-config.lib.mkRushiFull`).
 ```
 flake.nix              Flake entry point: inputs and outputs
 flake.lock             Pinned inputs (nixpkgs, fenix, rushi-config,
-                       the 8 ext flake inputs)
+                       the 2 version-pin flake inputs, the 8 ext
+                       flake inputs)
 rushi/
   default.nix          The declarative module: the rushi.* options
                        (model, limits, the [hooks] pipeline, loop,
@@ -25,17 +26,22 @@ rushi/
 
 ## How the flake is wired
 
-- `rushi-config` is a plain github input: the deployment
-  layer (the kernel + the TUI + the builder). It holds no
-  ext flake inputs, so bumping it is the only rushi-side
-  re-lock.
+- `rushi-config` is a plain github input: the builder.
+  Bumping it is for the builder logic (a kernel Nix API
+  change), not a kernel release. It holds no ext flake
+  inputs.
+- The version pins (`rushi-kernel`, `rushi-tui`) are this
+  repo's own github inputs (consumer data, the exts
+  precedent), passed to the builder. A kernel update is a
+  re-lock of this repo, never of rushi-config. Each follows
+  this flake's shared nixpkgs + fenix, so the whole graph
+  builds under one toolchain.
 - The 8 ext flake inputs are this repo's own inputs
   (consumer data). Each ext repo is self-contained — it
   tracks only nixpkgs/fenix, never the kernel — so a kernel
-  update is never a re-lock of the exts. Each follows this
-  flake's shared nixpkgs + fenix, so the whole graph builds
-  under one toolchain.
-- `packages.rushi` = `mkRushiFull { exts = <the raw table>;
+  update is never a re-lock of the exts.
+- `packages.rushi` = `mkRushiFull { kernel = rushi-kernel;
+  tui = rushi-tui; exts = <the raw table>;
   modules = [ ./rushi/default.nix ] }`, with the headless
   goal seeder merged into `bin/` so it resolves the package
   root config side by side.
@@ -74,10 +80,16 @@ imports = [ mrc.homeManagerModules.default ];
 ## Bumping the inputs
 
 ```
-nix flake update                    # everything
-nix flake update rushi-config       # just the deployment layer
-nix flake update rushi-goal-mode   # just one ext
+nix flake update                     # everything
+nix flake update rushi-kernel        # the kernel pin only
+nix flake update rushi-tui           # the TUI pin only
+nix flake update rushi-config        # the builder only
+nix flake update rushi-goal-mode     # just one ext
 ```
+
+`nix flake update rushi-kernel` re-locks only the kernel
+node: the rushi-config node stays put. The rushi-config
+bump is for the builder logic, not a kernel release.
 
 Every ext and hook the [hooks] pipeline names must be
 bundled by the exts table: the kernel's build-time drift
